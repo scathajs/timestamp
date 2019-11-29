@@ -16,6 +16,14 @@ app.get('/api/timestamp/', function(req, res) {
 });
 
 app.get('/api/timestamp/:date', function(req, res) {
+    if (Number.isInteger(parseInt(req.params.date, 10)) && parseInt(req.params.date, 10) >= 10000) {
+      res.json({
+          unix: parseInt(req.params.date, 10),
+          utc: new Date(parseInt(req.params.date, 10)).toUTCString()
+      });
+      return;
+    }
+
     let date = new Date(req.params.date);
     if (isNaN(date.getTime())) {
         res.json({error: 'Invalid Date'});
